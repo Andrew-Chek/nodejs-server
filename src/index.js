@@ -5,13 +5,14 @@ const fs = require('fs')
 
 const app = express();
 const mongoose = require('mongoose');
+const PORT = process.env.PORT || 8080;
 
 mongoose.connect('mongodb+srv://Endry_Chek:RvbUaLi9qUGb9LT@cluster0.rqlw2dd.mongodb.net/angular_dashboard?retryWrites=true&w=majority');
 
 const { boardsRouter } = require('./boardService/boardsRouter.js');
 const { tasksRouter } = require('./taskService/tasksRouter.js');
 const { usersRouter } = require('./userService/usersRouter.js');
-const { authentificateRouter } = require('./authService/authentificateRouter.js');
+const { authRouter } = require('./authService/authRouter.js');
 
 app.use(cors());
 app.use((req, res, next) => {
@@ -26,7 +27,7 @@ app.use(morgan('tiny'));
 
 app.use('/api/boards', boardsRouter);
 app.use('/api/tasks', tasksRouter);
-app.use('/api/auth', authentificateRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 
 const start = async () => {
@@ -34,7 +35,9 @@ const start = async () => {
 		if (!fs.existsSync('./src/files')) {
 			fs.mkdirSync('./src/files');
 		}
-		app.listen(8080);
+		app.listen(PORT, () => {
+      console.log(`server started on port ${PORT}`);
+    });
 	} catch (err) {
 		console.error(`Error on server startup: ${err.message}`);
 	}

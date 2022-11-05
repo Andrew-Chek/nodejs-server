@@ -5,7 +5,7 @@ const getMyBoardTasks = (req, res, next) => {
   const offset = checkOffset(req, res, next);
   if(checkStatus(req, res, next))
   {
-    return Task.find({assigned_to: req.user._id, board_id: req.body.board_id, status: req.query.status}, '-__v').skip(offset).limit(limit).then((result) => {
+    return Task.find({assigned_to: req.user._id, board_id: req.params.id, status: req.query.status}, '-__v').skip(offset).limit(limit).then((result) => {
       res.status(200).json({
         "tasks": result
       });
@@ -21,7 +21,7 @@ const getMyBoardTasks = (req, res, next) => {
       },
       {
         '$match': {
-          'board_id': req.body.board_id
+          'board_id': req.params.id
         }
       },
       {
@@ -71,6 +71,7 @@ function createTask(req, res, next) {
     name,
     status,
     description,
+    isArchived: false,
     assigned_to: req.user._id,
     board_id,
     created_date
@@ -89,17 +90,17 @@ const getMyTaskById = async (req, res, next) => {
 }
 
 const updateMyTaskById = async (req, res, next) => {
-  const { name, description, status } = req.body;
-  return Task.findByIdAndUpdate({_id: req.params.id, assigned_to: req.user._id}, {$set: { name, description, status } })
+  const { name, description, status, isArchived, comments } = req.body;
+  return Task.findByIdAndUpdate({_id: req.params.id, assigned_to: req.user._id}, {$set: { name, description, status, isArchived, comments } })
     .then((result) => {
-      res.status(200).json({message: 'Task details changed successfully'});
+      res.status(200).json({task: result});
     });
 }
 
 const deleteMyTaskById = (req, res, next) => {
   Task.findByIdAndDelete({_id: req.params.id, assigned_to: req.user._id})
   .then((result) => {
-    res.status(200).json({message: 'Task deleted successfully'});
+    res.status(200).json({task: result});
   });
 }
 

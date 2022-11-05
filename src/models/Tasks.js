@@ -6,13 +6,26 @@ const Task = mongoose.model('Task', {
     required: true,
   },
   description: {
-    type: Number,
+    type: String,
     required: true,
   },
   status: {
     type: String,
     required: true,
     enum: ['To do', 'In progress', 'Done']
+  },
+  isArchived: {
+    type: Boolean,
+    required: true,
+  },
+  comments: {
+    type: [
+      {
+        title: String,
+        message: String,
+        created_date: String,
+      }
+    ]
   },
   board_id: {
     type: String,

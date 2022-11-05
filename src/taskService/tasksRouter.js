@@ -8,15 +8,16 @@ const {
   deleteMyTaskById,
 } = require('./taskService.js');
 const { authMiddleware } = require('../middleware/authMiddleware');
+const { checkExistingBoard } = require('../middleware/boardMiddlewares')
 const { checkTask, checkExistingTask, checkTaskStatus } = require('../middleware/taskMiddlewares');
 
 router.use(authMiddleware)
 
-router.get('/', getMyBoardTasks);
+router.get('/:id', checkExistingBoard, getMyBoardTasks);
 
 router.post('/', checkTask, checkTaskStatus, createTask);
 
-router.get('/:id', checkExistingTask, getMyTaskById);
+router.get('/single/:id', checkExistingTask, getMyTaskById);
 
 router.put('/:id', checkExistingTask, checkTask, checkTaskStatus, updateMyTaskById);
 

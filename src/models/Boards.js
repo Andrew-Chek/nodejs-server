@@ -6,7 +6,7 @@ const Board = mongoose.model('Board', {
     required: true,
   },
   description: {
-    type: Number,
+    type: String,
     required: true,
   },
   assigned_to: {

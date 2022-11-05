@@ -21,7 +21,7 @@ const checkTask = (req, res, next) => {
 }
 
 const checkTaskStatus = (req, res, next) => {
-    const { type: status } = req.body;
+    const { status } = req.body;
     if(status == '')
     {
       next(new Error('Task status cannot be empty'))
