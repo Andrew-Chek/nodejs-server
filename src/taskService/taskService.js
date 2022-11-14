@@ -97,6 +97,16 @@ const updateMyTaskById = async (req, res, next) => {
     });
 }
 
+const updateMyTaskCommentsById = async (req, res, next) => {
+  const { title, message, time } = req.body;
+  return Task.findByIdAndUpdate({_id: req.params.id, assigned_to: req.user._id},
+    { $push: {comments: {title, message, time}} }).then(
+      (result) => {
+        res.status(200).json({message: 'Comment created successfully'});
+      }
+    )
+}
+
 const deleteMyTaskById = (req, res, next) => {
   Task.findByIdAndDelete({_id: req.params.id, assigned_to: req.user._id})
   .then((result) => {
@@ -109,5 +119,6 @@ module.exports = {
   createTask,
   getMyTaskById,
   updateMyTaskById,
+  updateMyTaskCommentsById,
   deleteMyTaskById
 };
