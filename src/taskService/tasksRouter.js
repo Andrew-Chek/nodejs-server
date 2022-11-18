@@ -6,6 +6,7 @@ const {
   getMyTaskById, 
   updateMyTaskById, 
   updateMyTaskCommentsById,
+  deleteMyTaskCommentById,
   deleteMyTaskById,
 } = require('./taskService.js');
 const { authMiddleware } = require('../middleware/authMiddleware');
@@ -23,6 +24,8 @@ router.get('/single/:id', checkExistingTask, getMyTaskById);
 router.put('/:id', checkExistingTask, checkTask, checkTaskStatus, updateMyTaskById);
 
 router.patch('/:id', checkExistingTask, updateMyTaskCommentsById)
+
+router.delete('/:id/comment/:comment_id', checkExistingTask, deleteMyTaskCommentById)
 
 router.delete('/:id', checkExistingTask, deleteMyTaskById);
 

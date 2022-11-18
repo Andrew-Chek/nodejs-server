@@ -114,11 +114,21 @@ const deleteMyTaskById = (req, res, next) => {
   });
 }
 
+const deleteMyTaskCommentById = async (req, res, next) => {
+  return Task.findByIdAndUpdate({_id: req.params.id, assigned_to: req.user._id},
+    { $pull: {comments: {_id: req.params.comment_id}} }).then(
+      (result) => {
+        res.status(200).json({message: 'Comment deleted successfully'});
+      }
+    )
+}
+
 module.exports = {
   getMyBoardTasks,
   createTask,
   getMyTaskById,
   updateMyTaskById,
   updateMyTaskCommentsById,
+  deleteMyTaskCommentById,
   deleteMyTaskById
 };
