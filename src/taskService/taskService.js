@@ -98,9 +98,9 @@ const updateMyTaskById = async (req, res, next) => {
 }
 
 const updateMyTaskCommentsById = async (req, res, next) => {
-  const { title, message, time } = req.body;
+  const { title, message, created_date } = req.body;
   return Task.findByIdAndUpdate({_id: req.params.id, assigned_to: req.user._id},
-    { $push: {comments: {title, message, time}} }).then(
+    { $push: {comments: {title, message, created_date}} }).then(
       (result) => {
         res.status(200).json({message: 'Comment created successfully'});
       }
